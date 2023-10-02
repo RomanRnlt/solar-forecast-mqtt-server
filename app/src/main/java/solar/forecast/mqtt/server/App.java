@@ -60,7 +60,7 @@ public class App {
             HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
 
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
 
             int responseCode = connection.getResponseCode();
 
