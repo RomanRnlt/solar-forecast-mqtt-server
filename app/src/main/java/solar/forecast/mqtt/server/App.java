@@ -4,20 +4,18 @@
 package solar.forecast.mqtt.server;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class App {
-    private String houseNumber, street, city, postalcode, state, country;
-    public String geocodeResponse, forecastResponse;
-    Map<String, String> latLonMap = new HashMap<>();
+    String houseNumber, street, city, postalcode, state, country;
+    static String geocodeResponse, forecastResponse;
+    static Map<String, String> latLonMap = new HashMap<>();
 
     public void getLatLon() {
         houseNumber = "12";
@@ -29,16 +27,12 @@ public class App {
 
         String geocodeUrl = String.format(
                 "https://geocode.maps.co/search?street=%s+%s&city=%s&state=%s&postalcode=%s&country=%s", houseNumber,
-                street,
-                city, state, postalcode, country);
+                street, city, state, postalcode, country);
 
         geocodeResponse = sendGetRequest(geocodeUrl);
-
-        parseJson();
-        getSolarForecast();
     }
 
-    public void getSolarForecast() {
+    public static void getSolarForecast() {
         String forecastUrl = String.format("https://api.forecast.solar/estimate/%s/%s/37/0/1", latLonMap.get("lat"),
                 latLonMap.get("lon"));
         System.out.println(forecastUrl);
@@ -50,7 +44,8 @@ public class App {
 
     public static void main(String[] args) {
         new App().getLatLon();
-
+        parseJson();
+        getSolarForecast();
     }
 
     public static String sendGetRequest(String urlString) {
@@ -91,23 +86,7 @@ public class App {
         return null;
     }
 
-    private static String sendHttpRequest(String urlString) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
-            }
-            return response.toString();
-        } finally {
-            connection.disconnect();
-        }
-    }
-
-    public void parseJson() {
+    public static void parseJson() {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
