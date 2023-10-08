@@ -47,12 +47,16 @@ public class App {
     }
 
     public static void mqtt() {
-        String broker = "tcp://mqtt.eclipse.org:1883"; // MQTT-Broker-Adresse
+        String broker = "tcp://localhost:1883"; // MQTT-Broker-Adresse
         String clientId = "Server1";
         try {
             MqttClient client = new MqttClient(broker, clientId, new MemoryPersistence());
             MqttConnectOptions connOpts = new MqttConnectOptions();
             client.connect(connOpts);
+
+            // Server bereit melden
+            MqttMessage readyMessage = new MqttMessage("Server is ready".getBytes());
+            client.publish("server-ready-topic", readyMessage);
 
             // Hier auf Adresse-Topic lauschen
             client.subscribe("adresse-topic", (topic, message) -> {
@@ -61,7 +65,7 @@ public class App {
 
                 // GET-Request an Drittanbieter API senden und Response verarbeiten
                 // ...
-
+                System.out.println(adresse);
                 // API-Response via MQTT an Client senden
                 MqttMessage responseMessage = new MqttMessage("API-Response".getBytes());
                 client.publish("api-response-topic", responseMessage);
@@ -76,6 +80,7 @@ public class App {
     }
 
     public static void main(String[] args) {
+        mqtt();
         // new App().getLatLon();
         // parseJson();
         // getSolarForecast();
