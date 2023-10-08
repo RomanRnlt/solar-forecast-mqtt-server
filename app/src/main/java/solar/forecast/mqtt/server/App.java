@@ -6,15 +6,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class App {
-    String houseNumber, street, city, postalcode, state, country;
+    static String houseNumber, street, city, postalcode, state, country;
     static String geocodeResponse, forecastResponse;
     static Map<String, String> latLonMap = new HashMap<>();
 
-    public void getLatLon() {
+    public static void getLatLon() {
         houseNumber = "12";
         street = "Lachnerstraße";
         city = "Karlsruhe";
@@ -39,10 +46,39 @@ public class App {
         System.out.println(forecastResponse);
     }
 
+    public static void mqtt() {
+        String broker = "tcp://mqtt.eclipse.org:1883"; // MQTT-Broker-Adresse
+        String clientId = "Server1";
+        try {
+            MqttClient client = new MqttClient(broker, clientId, new MemoryPersistence());
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            client.connect(connOpts);
+
+            // Hier auf Adresse-Topic lauschen
+            client.subscribe("adresse-topic", (topic, message) -> {
+                // Adresse aus der MQTT-Nachricht extrahieren
+                String adresse = new String(message.getPayload());
+
+                // GET-Request an Drittanbieter API senden und Response verarbeiten
+                // ...
+
+                // API-Response via MQTT an Client senden
+                MqttMessage responseMessage = new MqttMessage("API-Response".getBytes());
+                client.publish("api-response-topic", responseMessage);
+            });
+
+            // Hier weiteren Code für andere Operationen oder Endlosschleife fürs Lauschen
+
+            client.disconnect();
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        new App().getLatLon();
-        parseJson();
-        getSolarForecast();
+        // new App().getLatLon();
+        // parseJson();
+        // getSolarForecast();
     }
 
     public static String sendGetRequest(String urlString) {

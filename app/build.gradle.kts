@@ -20,6 +20,7 @@ dependencies {
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.8.9")
+    implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
 }
 
 testing {
