@@ -8,15 +8,9 @@ import solar.forecast.mqtt.server.App;
 import solar.forecast.mqtt.server.HttpUtil;
 import solar.forecast.mqtt.server.JsonHandler;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.nio.file.Files;
 
 public class MqttMessageHandler {
   public static void handleMessage(MqttClient client, MqttMessage message) {
