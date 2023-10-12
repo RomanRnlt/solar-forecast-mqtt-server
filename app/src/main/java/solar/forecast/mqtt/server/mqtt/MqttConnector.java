@@ -18,6 +18,7 @@ public class MqttConnector {
       System.out.println("Connecting to broker: " + broker);
       client.connect(connOpts);
       System.out.println("Connected");
+      System.out.println();
 
       return client;
     } catch (MqttException me) {

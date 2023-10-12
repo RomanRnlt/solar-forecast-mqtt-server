@@ -10,10 +10,11 @@ public class App {
     MqttService.startService();
   }
 
-  public static String getSolarForecast(Map<String, String> latLonMap) {
-    String forecastUrl = String.format("https://api.forecast.solar/estimate/%s/%s/37/0/1",
-        latLonMap.get("lat"), latLonMap.get("lon"));
+  public static String getSolarForecast(Map<String, String> latLonMap, String kwp) {
+    String forecastUrl = String.format("https://api.forecast.solar/estimate/%s/%s/37/0/%s",
+        latLonMap.get("lat"), latLonMap.get("lon"), kwp);
     System.out.println("API-Anfrage: " + forecastUrl);
+    System.out.println();
 
     return HttpUtil.sendGetRequest(forecastUrl);
   }
