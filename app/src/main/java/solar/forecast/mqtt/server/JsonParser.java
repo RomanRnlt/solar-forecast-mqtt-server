@@ -21,7 +21,7 @@ public class JsonParser {
         break;
       }
 
-      System.out.println("Lat: " + latLonMap.get("lat") + ", Lon: " + latLonMap.get("lon"));
+      System.out.println("Breitengrad: " + latLonMap.get("lat") + ", Längengrad: " + latLonMap.get("lon"));
     } catch (Exception e) {
       e.printStackTrace();
     }

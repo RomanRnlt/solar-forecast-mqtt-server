@@ -30,7 +30,8 @@ public class MqttMessageHandler {
 
     try {
       client.publish("topic/client", responseMqttMessage);
-      System.out.println("Published response message: " + responseMessage);
+      // System.out.println("Published response message: " + responseMessage);
+      System.out.println("Response message published");
     } catch (MqttException e) {
       e.printStackTrace();
     }
