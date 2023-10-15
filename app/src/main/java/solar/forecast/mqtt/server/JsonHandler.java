@@ -37,7 +37,7 @@ public class JsonHandler {
   }
 
   public static void logJsonToFile(String jsonDataset) {
-    String filePath = "/Users/roman/Downloads/solar-forecast_log.json";
+    String filePath = "/Users/roman/Documents/dev/H-KA/AvG/1b_Integrationstechniken/export-files/solar-forecast_log.json";
     try {
       // Create the file path
       Path path = Paths.get(filePath);
